@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     ret = bind(sock, (struct sockaddr *)&localAddr, sizeof(localAddr));
     assert(ret == 0);
 
-    listen(sock, 20);
+    listen(sock, 256);
 
     serverFd = st_netfd_open_socket(sock);
     assert(serverFd);
