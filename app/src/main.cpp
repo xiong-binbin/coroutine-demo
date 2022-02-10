@@ -6,9 +6,23 @@
 #include <arpa/inet.h>
 #include "st.h"
 
+#define REQUEST_TIMEOUT 30
+
 static void* handle_request(void* arg)
 {
+    ssize_t len = 0;
     st_netfd_t clientFd = (st_netfd_t)arg;
+    char req[512] = {0};
+    char resp[] = "hello\r\n";
+
+    len = st_read(clientFd, req, sizeof(req), SEC2USEC(REQUEST_TIMEOUT));
+    std::cout << "req: " << req << std::endl;
+    if(len > 0)
+    {
+        st_write(clientFd, resp, sizeof(resp), ST_UTIME_NO_TIMEOUT);
+    }
+
+    return NULL;
 }
 
 int main(int argc, char *argv[])
@@ -22,7 +36,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    sock = socket(PF_INET, SOCK_STREAM, 0);
+    sock = socket(AF_INET, SOCK_STREAM, 0);
     assert(sock > 0);
 
     memset(&localAddr, 0, sizeof(localAddr));

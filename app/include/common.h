@@ -10,6 +10,7 @@
 #define     SUCCESS             (0)
 #define     FAILED              (-1)
 
+#define SEC2USEC(s) ((s)*1000000LL)
 
 #define SAFE_FREE(x) do\
 {\
